@@ -10,16 +10,16 @@ env:
 
 jobs:
   check:
-    name: Check
+    name: Check (${{ matrix.crate-type }}, ${{ matrix.async && 'async' || 'not-async' }})
 
     strategy:
       matrix:
-        async:
-          - true
-          - false
         crate-type:
           - bin
           - lib
+        async:
+          - true
+          - false
 
     runs-on: ubuntu-latest
 
@@ -45,16 +45,16 @@ jobs:
           cargo clippy --all-targets --all-features -- -D warnings
 
   format:
-    name: Format
+    name: Format (${{ matrix.crate-type }}, ${{ matrix.async && 'async' || 'not-async' }})
 
     strategy:
       matrix:
-        async:
-          - true
-          - false
         crate-type:
           - bin
           - lib
+        async:
+          - true
+          - false
 
     runs-on: ubuntu-latest
 
@@ -80,16 +80,16 @@ jobs:
           cargo fmt --all -- --check
 
   toml-format:
-    name: TOML Format
+    name: TOML Format (${{ matrix.crate-type }}, ${{ matrix.async && 'async' || 'not-async' }})
 
     strategy:
       matrix:
-        async:
-          - true
-          - false
         crate-type:
           - bin
           - lib
+        async:
+          - true
+          - false
 
     runs-on: ubuntu-latest
 
