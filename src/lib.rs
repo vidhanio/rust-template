@@ -10,11 +10,11 @@ pub type {{ project-name | upper_camel_case }}Result<T> = std::result::Result<T,
 ///
 /// Returns an error if the application fails to run.
 {%- if async %}
+#[allow(clippy::unused_async)]
 pub async fn run() -> {{ project-name | upper_camel_case }}Result<()> {
-    std::future::ready(todo!()).await
 {%- else %}
 pub fn run() -> {{ project-name | upper_camel_case }}Result<()> {
-    todo!()
 {%- endif %}
+    todo!()
 }
 {% endif %}
