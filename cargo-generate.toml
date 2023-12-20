@@ -1,0 +1,11 @@
+[template]
+ignore = [".github/workflows/generate-ci.yaml"]
+
+[placeholders.async]
+default = false
+name = "async"
+prompt = "Want to use async?"
+type = "bool"
+
+[conditional.'crate_type == "lib"']
+ignore = [".dockerignore", "Dockerfile", "src/main.rs"]

@@ -1,0 +1,32 @@
+[package]
+name = "{{ project-name }}"
+
+authors = ["{{ authors }}"]
+edition = "2021"
+license-file = "LICENSE.txt"
+readme = "README.md"
+version = "0.1.0"
+
+[dependencies]
+{%- if crate_type == "bin" -%}
+{%- if async %}
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+{%- endif %}
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+color-eyre = "0.6"
+dotenvy = "0.15"
+{%- endif %}
+thiserror = "1"
+tracing = "0.1"
+
+[lints]
+    [lints.rust]
+    missing_copy_implementations = "warn"
+    missing_debug_implementations = "warn"
+    # missing_docs = "warn"
+    unsafe_code = "forbid"
+
+    [lints.clippy]
+    # cargo = "warn"
+    nursery = "warn"
+    pedantic = "warn"

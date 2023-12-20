@@ -1,0 +1,113 @@
+name: Build Template
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+env:
+  PROJECT_NAME: template-test
+
+jobs:
+  check:
+    name: Check
+
+    strategy:
+      matrix:
+        async:
+          - true
+          - false
+        crate-type:
+          - bin
+          - lib
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate project
+        uses: cargo-generate/cargo-generate-action@main
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          arguments: -d async=${{ matrix.async }} --${{ matrix.crate-type }}
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - name: Check code
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo clippy --all-targets --all-features -- -D warnings
+
+  format:
+    name: Format
+
+    strategy:
+      matrix:
+        async:
+          - true
+          - false
+        crate-type:
+          - bin
+          - lib
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate project
+        uses: cargo-generate/cargo-generate-action@main
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          arguments: -d async=${{ matrix.async }} --${{ matrix.crate-type }}
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Check formatting
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo fmt --all -- --check
+
+  toml-format:
+    name: TOML Format
+
+    strategy:
+      matrix:
+        async:
+          - true
+          - false
+        crate-type:
+          - bin
+          - lib
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate project
+        uses: cargo-generate/cargo-generate-action@main
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          arguments: -d async=${{ matrix.async }} --${{ matrix.crate-type }}
+
+      - name: Install Taplo CLI
+        uses: dtolnay/install@taplo-cli
+
+      - name: Check TOML formatting
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          taplo fmt --check
