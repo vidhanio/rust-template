@@ -15,7 +15,8 @@ dotenvy = "0.15"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 {%- endif %}
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-{%- endif -%}
+
+{% endif -%}
 thiserror = "1"
 tracing = "0.1"
 
