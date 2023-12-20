@@ -8,14 +8,14 @@ readme = "README.md"
 version = "0.1.0"
 
 [dependencies]
-{%- if crate_type == "bin" -%}
+{% if crate_type == "bin" -%}
+color-eyre = "0.6"
+dotenvy = "0.15"
 {%- if async %}
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 {%- endif %}
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-color-eyre = "0.6"
-dotenvy = "0.15"
-{%- endif %}
+{%- endif -%}
 thiserror = "1"
 tracing = "0.1"
 
