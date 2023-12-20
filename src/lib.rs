@@ -11,10 +11,10 @@ pub type {{ project-name | upper_camel_case }}Result<T> = std::result::Result<T,
 /// Returns an error if the application fails to run.
 {%- if async %}
 pub async fn run() -> {{ project-name | upper_camel_case }}Result<()> {
-    std::future::ready(Ok(())).await
+    std::future::ready(todo!()).await
 {%- else %}
 pub fn run() -> {{ project-name | upper_camel_case }}Result<()> {
-    Ok(())
+    todo!()
 {%- endif %}
 }
 {% endif %}
